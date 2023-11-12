@@ -15,12 +15,12 @@ public class ProductsController : ControllerBase
 {
     private IProductRepository _productRepository;
     private readonly IMediator _mediator;
-    private IPublisher _publisher;
-    public ProductsController(IProductRepository productRepository, IMediator mediator, IPublisher publisher)
+   
+    public ProductsController(IProductRepository productRepository, IMediator mediator)
     {
         _productRepository = productRepository;
         _mediator = mediator;
-        _publisher = publisher;
+       
     }
 
     // GET: api/Products
@@ -56,30 +56,15 @@ public class ProductsController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
-        await _productRepository.Update(product);
-
+        await _mediator.Send(new UpdateProductCommand(id, product));
 
         return NoContent();
     }
 
-    // POST: api/Products
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    //[HttpPost]
-    //public async Task<ActionResult<Product>> PostProduct(Product product)
-    //{
-    //    if (!ModelState.IsValid)
-    //    {
-    //        return BadRequest(ModelState);
-    //    }
-    //    await _mediator.Send(new AddProductCommand(product));
-
-    //    return StatusCode(201);
-
-    //    //return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
-    //}
+   
     [HttpPost]
     public async Task<ActionResult> PostProduct([FromBody]Product product)
     {
@@ -87,7 +72,7 @@ public class ProductsController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var productToReturn =  await _mediator.Send(new AddProductCommand(product));
+        await _mediator.Send(new AddProductCommand(product));
 
         return StatusCode(201);
         
