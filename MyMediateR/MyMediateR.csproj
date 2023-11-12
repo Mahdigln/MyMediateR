@@ -28,7 +28,6 @@
     <Folder Include="Context\" />
     <Folder Include="Behaviors\" />
     <Folder Include="Notifications\Products\" />
-    <Folder Include="Queries\Products\" />
   </ItemGroup>
 
 </Project>
