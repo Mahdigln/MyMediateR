@@ -13,12 +13,11 @@ namespace MyMediateR.Controllers;
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    private IProductRepository _productRepository;
     private readonly IMediator _mediator;
    
-    public ProductsController(IProductRepository productRepository, IMediator mediator)
+    public ProductsController(IMediator mediator)
     {
-        _productRepository = productRepository;
+       
         _mediator = mediator;
        
     }
@@ -92,9 +91,6 @@ public class ProductsController : ControllerBase
 
     }
 
-    private async Task<bool> ProductExists(int id)
-    {
-        return await _productRepository.IsExists(id);
-    }
+   
 }
 
